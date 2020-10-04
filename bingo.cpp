@@ -24,6 +24,8 @@ int main() {
 		iNumber[idx2] = iTemp;
 	}
 
+	int iBingo = 0;
+
 	while (true)
 	{
 		system("cls");
@@ -42,6 +44,12 @@ int main() {
 
 			cout << endl;
 		}
+
+		cout << "Bingo Line : " << iBingo << endl;
+
+		//줄수가 5 이상일 경우 게임을 종료한다.
+		if (iBingo >= 5)
+			break;
 
 		cout << "숫자를 입력하세요(0 : 종료) : ";
 		int iInput;
@@ -82,6 +90,59 @@ int main() {
 		if (bAcc)
 			continue;
 
+		//빙고 줄 수를 체크하는 것은 매번 숫자를 입력할때마다 처음부터
+		//새로 카운트를 할것이다. 그러므로 iBingo 변수를 0으로 매번
+		//초기화하고 새롭게 줄 수를 구해주도록 한다.
+		iBingo = 0;
+
+		//가로, 세로 줄 수를 구해준다.
+		int iStar1 = 0, iStar2 = 0;
+		for (int i = 0; i < 5; i++)
+		{
+			//한줄을 체크하기 전에 먼저 0으로 별 개수를 초기화한다.
+			for (int j = 0; j < 5; j++)
+			{
+
+				//가로 별 개수를 구해준다.
+				if (iNumber[i * 5 + j] == INT_MAX)
+					iStar1++;
+
+				//세로 별 개수를 구해준다.
+				if (iNumber[j * 5 + i] == INT_MAX)
+					iStar2++;
+			}
+
+			//j for문을 빠져나오고 나면 현재 줄의 가로 별 개수가 몇개인지
+			//iStar1 변수에 들어가게 된다. iStar1이 값이 5이면 한줄이
+			//모두 *이라는 의미이므로 빙고 줄 카운트를 추가해준다.
+			if (iStar1 == 5)
+				iBingo++;
+
+			if (iStar2 == 5)
+				iBingo++;
+		}
+
+		//왼쪽 상단 -> 오른쪽 하단으로 대각선 체크
+		iStar1 = 0;
+		for (int i = 0; i < 25; i+= 6)
+		{
+			if (iNumber[i] == INT_MAX)
+				iStar1++;
+		}
+
+		if (iStar1 == 5)
+			iBingo++;
+
+		//오른쪽 상단 -> 왼쪽 하단 대각선 체크
+		iStar1 = 0;
+		for (int i = 4; i < 20; i += 4)
+		{
+			if (iNumber[i] == INT_MAX)
+				iStar1++;
+		}
+
+		if (iStar1 == 5)
+			iBingo++;
 	}
 	return 0;
 
